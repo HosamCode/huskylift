@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'HuskyLift',
     short_name: 'HuskyLift',
     description: 'Track your Marino gym attendance and build consistency.',
-    start_url: '/login',
+    start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#b91c1c',
