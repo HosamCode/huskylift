@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import Link from 'next/link';
 
 function pad(n: number) {
   return String(n).padStart(2, '0');
@@ -167,6 +168,11 @@ export default function DashboardPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-6 p-8">
+      <div className="flex w-full max-w-sm justify-end">
+        <Link href="/profile" className="text-sm font-medium text-red-700 hover:underline">
+          Profile →
+        </Link>
+      </div>
       <h1 className="text-3xl font-bold text-red-700">Welcome, {name}!</h1>
 
       <div className="flex w-full max-w-sm items-center justify-around rounded-xl border border-neutral-200 p-4">
