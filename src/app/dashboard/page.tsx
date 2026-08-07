@@ -3,33 +3,28 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import Link from 'next/link';
+import NavBar from '@/components/NavBar';
 
 function pad(n: number) {
   return String(n).padStart(2, '0');
 }
 
-// 'YYYY-MM-DD' for a given year / month (0-based) / day, as a string (no timezone drift).
 function dateKey(year: number, month: number, day: number) {
   return `${year}-${pad(month + 1)}-${pad(day)}`;
 }
 
-// Today's date in Marino's timezone, as 'YYYY-MM-DD'.
 function todayInBoston() {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
 }
 
-// The Monday (week start) of a given 'YYYY-MM-DD' date, as a 'YYYY-MM-DD' string.
 function mondayOf(dateStr: string) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const dt = new Date(y, m - 1, d);
-  const offset = (dt.getDay() + 6) % 7; // days since Monday (Mon=0 … Sun=6)
+  const offset = (dt.getDay() + 6) % 7;
   dt.setDate(dt.getDate() - offset);
   return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(dt.getDate())}`;
 }
 
-// Consecutive completed weeks that met the goal. The current, unfinished week
-// only counts once it has actually reached the goal — never penalized mid-week.
 function computeStreak(visited: Set<string>, goal: number, todayStr: string) {
   const perWeek = new Map<string, number>();
   for (const d of visited) {
@@ -42,7 +37,7 @@ function computeStreak(visited: Set<string>, goal: number, todayStr: string) {
   const keyOf = () => `${cursor.getFullYear()}-${pad(cursor.getMonth() + 1)}-${pad(cursor.getDate())}`;
 
   let streak = 0;
-  if ((perWeek.get(keyOf()) ?? 0) >= goal) streak = 1; // current week, only if already met
+  if ((perWeek.get(keyOf()) ?? 0) >= goal) streak = 1;
   cursor.setDate(cursor.getDate() - 7);
   while ((perWeek.get(keyOf()) ?? 0) >= goal) {
     streak++;
@@ -91,10 +86,10 @@ export default function DashboardPage() {
       const email = data.user.email ?? '';
       setName(email.split('@')[0] || 'there');
 
-      const { data: profileRows } = await supabase.from('profiles').select('weekly_goal').limit(1);
+      const { data: profileRows } = await supabase.from('profiles').select('weekly_goal').eq('id', data.user.id).limit(1);
       setGoal((profileRows?.[0]?.weekly_goal as number) ?? 3);
 
-      const { data: rows } = await supabase.from('check_ins').select('visit_date');
+      const { data: rows } = await supabase.from('check_ins').select('visit_date').eq('user_id', data.user.id);
       setVisited(new Set((rows ?? []).map((r) => r.visit_date as string)));
       setLoading(false);
     }
@@ -126,7 +121,6 @@ export default function DashboardPage() {
 
     const { error } = await supabase.from('check_ins').insert({ user_id: userId });
 
-    // 23505 = unique violation = already checked in today; treat as success.
     if (error && error.code !== '23505') {
       setError(error.message);
       setSaving(false);
@@ -137,12 +131,6 @@ export default function DashboardPage() {
     setSaving(false);
   }
 
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.replace('/login');
-  }
-
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center p-8">
@@ -151,7 +139,6 @@ export default function DashboardPage() {
     );
   }
 
-  // Derived stats — all computed from `visited`, nothing stored.
   const streak = computeStreak(visited, goal, today);
   const currentWeekStart = mondayOf(today);
   let thisWeek = 0;
@@ -168,11 +155,7 @@ export default function DashboardPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center gap-6 p-8">
-      <div className="flex w-full max-w-sm justify-end">
-        <Link href="/profile" className="text-sm font-medium text-red-700 hover:underline">
-          Profile →
-        </Link>
-      </div>
+      <NavBar />
       <h1 className="text-3xl font-bold text-red-700">Welcome, {name}!</h1>
 
       <div className="flex w-full max-w-sm items-center justify-around rounded-xl border border-neutral-200 p-4">
@@ -255,13 +238,6 @@ export default function DashboardPage() {
       <p className="text-xs text-neutral-400">
         {visited.size} total {visited.size === 1 ? 'visit' : 'visits'}
       </p>
-
-      <button
-        onClick={handleLogout}
-        className="rounded border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100"
-      >
-        Log out
-      </button>
     </main>
   );
 }
