@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import NavBar from '@/components/NavBar';
 import { createClient } from '@/lib/supabase/client';
-
 
 type Post = {
   id: string;
@@ -177,6 +175,7 @@ export default function ProfilePage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col gap-6 p-8">
       <NavBar />
+
       <div className="flex flex-col items-center gap-2">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-red-700 text-2xl font-bold text-white">
           {username ? username[0].toUpperCase() : '?'}
