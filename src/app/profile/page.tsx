@@ -182,28 +182,28 @@ export default function ProfilePage() {
         </div>
         {username && !editing ? (
           <div className="flex items-center gap-2">
-            <p className="text-xl font-semibold text-neutral-900">@{username}</p>
+            <p className="text-xl font-semibold">@{username}</p>
             <button onClick={() => setEditing(true)} className="text-xs text-red-700 hover:underline">edit</button>
           </div>
         ) : (
           <div className="flex w-full flex-col items-center gap-2">
-            <p className="text-sm text-neutral-500">{username ? 'Change your username' : 'Pick a username to claim your page'}</p>
-            <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="username" className="w-56 rounded border border-neutral-300 px-3 py-2 text-center" />
+            <p className="text-sm text-stone-500">{username ? 'Change your username' : 'Pick a username to claim your page'}</p>
+            <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="username" className="w-56 rounded border border-stone-300 bg-white px-3 py-2 text-center" />
             {error && <p className="text-sm text-red-600">{error}</p>}
-            <button onClick={saveUsername} disabled={saving} className="w-56 rounded bg-red-700 px-3 py-2 font-medium text-white hover:bg-red-800 disabled:opacity-60">
+            <button onClick={saveUsername} disabled={saving} className="w-56 rounded bg-red-600 px-3 py-2 font-medium text-white hover:bg-red-700 disabled:opacity-60">
               {saving ? 'Saving…' : 'Save username'}
             </button>
           </div>
         )}
       </div>
 
-      <div className="rounded-xl border border-neutral-200 p-4 text-center">
+      <div className="rounded-xl border border-stone-200 bg-white p-4 text-center">
         <p className="text-2xl font-bold text-red-700">{totalVisits}</p>
-        <p className="text-xs text-neutral-500">total check-ins</p>
+        <p className="text-xs text-stone-500">total check-ins</p>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 p-3">
-        <textarea value={postBody} onChange={(e) => setPostBody(e.target.value)} placeholder="Share an update, or add a photo…" rows={3} maxLength={500} className="w-full resize-none rounded-lg border border-neutral-300 px-3 py-2 text-sm" />
+      <div className="flex flex-col gap-2 rounded-xl border border-stone-200 bg-white p-3">
+        <textarea value={postBody} onChange={(e) => setPostBody(e.target.value)} placeholder="Share an update, or add a photo…" rows={3} maxLength={500} className="w-full resize-none rounded-lg border border-stone-300 px-3 py-2 text-sm" />
 
         {photoPreview && (
           <div className="relative w-24">
@@ -220,7 +220,7 @@ export default function ProfilePage() {
             + Photo
             <input type="file" accept="image/*" onChange={handleSelectPhoto} className="hidden" />
           </label>
-          <button onClick={createPost} disabled={posting || (!postBody.trim() && !photoFile)} className="rounded-lg bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800 disabled:opacity-50">
+          <button onClick={createPost} disabled={posting || (!postBody.trim() && !photoFile)} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50">
             {posting ? 'Posting…' : 'Post'}
           </button>
         </div>
@@ -228,18 +228,18 @@ export default function ProfilePage() {
 
       <div className="flex flex-col gap-3">
         {posts.length === 0 ? (
-          <p className="text-center text-sm text-neutral-400">No posts yet. Share your first update above.</p>
+          <p className="text-center text-sm text-stone-400">No posts yet. Share your first update above.</p>
         ) : (
           posts.map((post) => (
-            <div key={post.id} className="rounded-lg border border-neutral-200 p-3">
+            <div key={post.id} className="rounded-lg border border-stone-200 bg-white p-3">
               {post.imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={post.imageUrl} alt="post" className="mb-2 w-full rounded-lg object-cover" />
               )}
-              {post.body && <p className="whitespace-pre-wrap text-sm text-neutral-800">{post.body}</p>}
+              {post.body && <p className="whitespace-pre-wrap text-sm text-stone-800">{post.body}</p>}
               <div className="mt-2 flex items-center justify-between">
-                <span className="text-xs text-neutral-400">{new Date(post.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                <button onClick={() => deletePost(post)} className="text-xs text-neutral-400 hover:text-red-600">delete</button>
+                <span className="text-xs text-stone-400">{new Date(post.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                <button onClick={() => deletePost(post)} className="text-xs text-stone-400 hover:text-red-600">delete</button>
               </div>
             </div>
           ))

@@ -12,31 +12,54 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-white px-6 py-16 text-center">
-      <div className="flex flex-col items-center gap-5">
-        <Image src="/icon-192.png" alt="HuskyLift" width={80} height={80} className="rounded-2xl shadow-sm" priority />
-        <div>
-          <h1 className="text-5xl font-extrabold tracking-tight text-neutral-900">
-            Husky<span className="text-red-700">Lift</span>
-          </h1>
-          <p className="mt-3 text-lg text-neutral-500">Show up. Track every visit. Build the streak.</p>
-        </div>
-      </div>
-
-      <p className="max-w-md text-balance text-neutral-600">
-        The simplest way for Northeastern students to stay consistent at Marino. One tap when you arrive — watch your streak grow.
-      </p>
-
-      <div className="flex w-full max-w-xs flex-col gap-3">
-        <Link href="/login" className="rounded-lg bg-red-700 px-6 py-3 font-semibold text-white transition hover:bg-red-800">
+    <main className="flex min-h-screen flex-col bg-[#f4f1ea] text-stone-800">
+      <header className="flex items-center justify-between px-6 py-5">
+        <span className="font-[family-name:var(--font-poppins)] text-xl font-extrabold tracking-tight">
+          Husky<span className="text-red-600">Lift</span>
+        </span>
+        <Link
+          href="/login"
+          className="font-[family-name:var(--font-poppins)] text-sm font-semibold text-stone-600 transition hover:text-stone-900"
+        >
           Log in
         </Link>
-        <Link href="/signup" className="rounded-lg border border-neutral-300 px-6 py-3 font-semibold text-neutral-800 transition hover:bg-neutral-50">
-          Sign up
-        </Link>
-      </div>
+      </header>
 
-      <p className="text-xs text-neutral-400">Built for the Marino Recreation Center community.</p>
+      <div className="flex flex-1 flex-col items-center justify-center px-6 pb-24 text-center">
+        <Image
+          src="/icon-192.png"
+          alt="HuskyLift"
+          width={72}
+          height={72}
+          className="mb-8 rounded-2xl shadow-sm"
+          priority
+        />
+
+        <h1 className="font-[family-name:var(--font-poppins)] text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
+          Build your <span className="text-red-600">Marino</span> habit
+        </h1>
+
+        <p className="mt-5 max-w-md text-lg text-stone-500">
+          One-tap check-ins, streaks, and your gym history — all in one place.
+        </p>
+
+        <div className="mt-9 flex w-full max-w-xs flex-col gap-3">
+          <Link
+            href="/signup"
+            className="font-[family-name:var(--font-poppins)] rounded-full bg-red-600 px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-red-700 active:scale-95"
+          >
+            Get started
+          </Link>
+          <Link
+            href="/login"
+            className="font-[family-name:var(--font-poppins)] rounded-full border border-stone-300 bg-white/60 px-6 py-3.5 font-semibold text-stone-700 transition hover:bg-white active:scale-95"
+          >
+            I already have an account
+          </Link>
+        </div>
+
+        <p className="mt-8 text-xs text-stone-400">For the Marino Recreation Center community.</p>
+      </div>
     </main>
   );
 }
